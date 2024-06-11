@@ -2,10 +2,6 @@ import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto/login-user.dto';
-import axios from 'axios';
-
-
-const BASE_URL = 'http://localhost:3000';
 
 @Controller('users')
 export class UsersController {
@@ -14,10 +10,12 @@ export class UsersController {
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto) {
     try {
-      const url = `${BASE_URL}/users/register`;
-      const response = await axios.post(url, createUserDto);
-      return response.data;
+      const user = await this.usersService.register(createUserDto);
+      return user;
     } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw new BadRequestException(error.message);
+      }
       throw new BadRequestException('Failed to register user.');
     }
   }
@@ -25,9 +23,8 @@ export class UsersController {
   @Post('login')
   async login(@Body() loginUserDto: LoginUserDto) {
     try {
-      const url = `${BASE_URL}/users/login`;
-      const response = await axios.post(url, loginUserDto);
-      return response.data;
+      const { accessToken } = await this.usersService.login(loginUserDto.username, loginUserDto.password);
+      return { accessToken };
     } catch (error) {
       throw new BadRequestException('Failed to login.');
     }
