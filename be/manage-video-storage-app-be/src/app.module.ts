@@ -4,23 +4,17 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from './users/users.module';
-import { UsersService } from './users/users.service';
-import { UserRepository } from './users/repository/user.repository';
-import { User } from './users/entities/user/user';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { DatabaseConfig } from './config/database.config'; 
 
 @Module({
   imports: [
-    ConfigModule.forRoot(), 
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT, 10),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE,
-      autoLoadEntities: true,
-      synchronize: true, 
-      entities: [User],
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env', }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useClass: DatabaseConfig, 
+      inject: [ConfigService],
     }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -33,9 +27,7 @@ import { User } from './users/entities/user/user';
     PassportModule,
     UsersModule,
   ],
-  providers: [
-    UsersService,
-    UserRepository,
-  ],
+  controllers: [AppController],
+  providers: [AppService, DatabaseConfig],
 })
 export class AppModule {}
