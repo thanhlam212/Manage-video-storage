@@ -7,7 +7,7 @@ import { UserRepository } from './repository/user.repository';
 
 import { JwtStrategy } from './strategies/jwt.strategy'; 
 import { ConfigModule, ConfigService } from '@nestjs/config'; 
-import { User } from './entities/user';
+import { User } from './entities/user.entity';
 
 @Module({
   imports: [
