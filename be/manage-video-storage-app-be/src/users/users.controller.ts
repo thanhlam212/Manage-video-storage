@@ -16,6 +16,7 @@ export class UsersController {
       if (error instanceof BadRequestException) {
         throw new BadRequestException(error.message);
       }
+      console.log(error);
       throw new BadRequestException('Failed to register user.');
     }
   }
@@ -26,6 +27,7 @@ export class UsersController {
       const { accessToken } = await this.usersService.login(loginUserDto.username, loginUserDto.password);
       return { accessToken };
     } catch (error) {
+      console.log(error);
       throw new BadRequestException('Failed to login.');
     }
   }
