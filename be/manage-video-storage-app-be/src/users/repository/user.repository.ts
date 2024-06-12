@@ -1,11 +1,26 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
-import { User } from '../entities/user/user';
+import { User } from '../entities/user.entity';
 import { CreateUserDto } from '../dto/create-user.dto/create-user.dto';
-import { BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 
-@EntityRepository(User)
-export class UserRepository extends Repository<User> {
+@Injectable()
+export class UserRepository {
+  constructor(
+    @InjectRepository(User)
+    private readonly repository: Repository<User>,
+  ) {}
+
+  async findByUsername(username: string): Promise<User> {
+    return this.repository.findOne({ where: { username } });
+  }
+
+  async hashPassword(password: string): Promise<string> {
+    return bcrypt.hash(password, 10);
+  }
+
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const { username, password, email, fullName, phoneNumber } = createUserDto;
 
@@ -17,18 +32,10 @@ export class UserRepository extends Repository<User> {
       user.fullName = fullName;
       user.phoneNumber = phoneNumber;
 
-      return await this.save(user);
+      return await this.repository.save(user);
     } catch (error) {
       // Handle specific database constraints or other errors
       throw new BadRequestException('Failed to create user');
     }
-  }
-
-  async findByUsername(username: string): Promise<User | undefined> {
-    return this.findOne({ where: { username } });
-  }
-
-  async hashPassword(password: string): Promise<string> {
-    return bcrypt.hash(password, 10);
   }
 }
