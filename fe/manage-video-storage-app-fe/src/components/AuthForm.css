@@ -1,0 +1,78 @@
+body {
+    background: #f0f0f0;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .form-container {
+    width: 300px;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 50px auto;
+    text-align: center;
+  }
+  
+  .logo {
+    width: 200px;
+    margin: 0 auto 20px;
+  }
+  
+  .title {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .input-container {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .input-container input {
+    width: 100%;
+    padding: 10px 0;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .input-container label {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    font-size: 18px;
+    color: #aaa;
+  }
+  
+  .btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: #007bff;
+    color: white;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background: #0056b3;
+  }
+  
+  .toggle-message {
+    margin-top: 20px;
+    color: #333;
+  }
+  
+  .toggle-message span {
+    color: #007bff;
+    cursor: pointer;
+  }
+  
+  .toggle-message span:hover {
+    color: #0056b3;
+  }
+  
