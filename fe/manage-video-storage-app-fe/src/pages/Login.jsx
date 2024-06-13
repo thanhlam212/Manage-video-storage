@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import AuthService from '../services/AuthService';
-
-function Login() {
-  const [email, setEmail] = useState('');
+import {login} from '../services/AuthService'
+ 
+const Login = () => {
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async () => {
     try {
-      await AuthService.login(email, password);
-      navigate('/dashboard');
+      const data = await login(username, password);
+      console.log('Login success:', data);
     } catch (error) {
       console.error('Login failed:', error);
     }
@@ -20,27 +17,21 @@ function Login() {
   return (
     <div>
       <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
+      <input
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Username"
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+      />
+      <button onClick={handleLogin}>Login</button>
     </div>
   );
-}
+};
 
 export default Login;

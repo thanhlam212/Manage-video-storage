@@ -1,42 +1,39 @@
-const API_URL = 'http://localhost:3000/users';
+import apiClient from '../axiosConfig';
 
-const login = async (email, password) => {
-  const response = await fetch(`${API_URL}/auth/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, password }),
-  });
-
-  if (!response.ok) {
-    throw new Error('Login failed');
+export const login = async (username, password) => {
+  try {
+    const response = await apiClient.post('/users/login', { username, password });
+    if (response.data && response.data.accessToken) {
+      localStorage.setItem('accessToken', response.data.accessToken);
+    }
+    return response.data;
+  } catch (error) {
+    console.error('Login error:', error);
+    throw error;
   }
-
-  const data = await response.json();
-  localStorage.setItem('user', JSON.stringify(data));
 };
 
-const register = async (email, password) => {
-  const response = await fetch(`${API_URL}/auth/register`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, password }),
-  });
-
-  if (!response.ok) {
-    throw new Error('Registration failed');
+export const register = async (userData) => {
+  try {
+    const response = await apiClient.post('/users/register', userData);
+    return response.data;
+  } catch (error) {
+    console.error('Register error:', error);
+    throw error;
   }
-
-  const data = await response.json();
-  return data;
 };
 
-const AuthService = {
-  login,
-  register,
+export const getProfile = async () => {
+  try {
+    const response = await apiClient.get('/users/profile');
+    return response.data;
+  } catch (error) {
+    console.error('Get profile error:', error);
+    throw error;
+  }
 };
 
-export default AuthService;
+export const logout = () => {
+  localStorage.removeItem('accessToken');
+};
+

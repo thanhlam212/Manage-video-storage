@@ -8,12 +8,10 @@ function App() {
 
   return (
     <Router>
-    <div>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </div>
+    <Switch>
+      <Route path="/login" component={Login} />
+      <Route path="/register" component={Register} />
+    </Switch>
   </Router>
   );
 }
