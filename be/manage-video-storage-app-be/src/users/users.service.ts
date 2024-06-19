@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from './repository/user.repository';
 import { CreateUserDto } from './dto/create-user.dto/create-user.dto';
-import { User } from './entities/user.entity';
+import { User } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
@@ -17,15 +17,14 @@ export class UsersService {
   }
 
   async register(createUserDto: CreateUserDto): Promise<User> {
-    const { username, password, email, fullName, phoneNumber } = createUserDto;
+    const { username } = createUserDto;
 
     const existingUser = await this.usersRepository.findByUsername(username);
     if (existingUser) {
       throw new UnauthorizedException('Username already exists');
     }
 
-    const user = await this.usersRepository.createUser(createUserDto);
-    return user;
+    return this.usersRepository.createUser(createUserDto);
   }
 
   async login(username: string, password: string): Promise<{ accessToken: string }> {

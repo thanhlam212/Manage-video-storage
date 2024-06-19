@@ -7,7 +7,6 @@ import { JwtPayload } from 'src/interfaces/jwt-payload.interface';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  [x: string]: any;
   constructor(
     private readonly configService: ConfigService,
     private readonly usersService: UsersService,
@@ -29,5 +28,4 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException('Unauthorized', error.message);
     }
   }
-
 }

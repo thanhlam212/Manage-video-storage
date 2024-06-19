@@ -1,21 +1,15 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { UsersModule } from './users/users.module';
+import { UserModule } from './users/users.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DatabaseConfig } from './config/database.config'; 
+import { PrismaService } from 'prisma/service/prisma.service';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env', }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useClass: DatabaseConfig, 
-      inject: [ConfigService],
-    }),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -25,9 +19,9 @@ import { DatabaseConfig } from './config/database.config';
       inject: [ConfigService],
     }),
     PassportModule,
-    UsersModule,
+    UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService, DatabaseConfig],
+  providers: [AppService, PrismaService], // Đăng ký PrismaService
 })
 export class AppModule {}
