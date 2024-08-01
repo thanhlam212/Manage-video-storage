@@ -4,16 +4,35 @@ import { UserRepository } from './repository/user.repository';
 import { CreateUserDto } from './dto/create-user.dto/create-user.dto';
 import { User } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
+import { PrismaService } from 'prisma/service/prisma.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly usersRepository: UserRepository,
     private readonly jwtService: JwtService,
+    private readonly prisma: PrismaService
   ) {}
 
   async findByUsername(username: string): Promise<User | undefined> {
     return this.usersRepository.findByUsername(username);
+  }
+
+  async getUserById(id: number) {
+    if (!id) {
+      throw new Error('User ID must be provided');
+    }
+    
+    try {
+      return await this.prisma.user.findUnique({
+        where: {
+          id: id,
+        },
+      });
+    } catch (error) {
+      console.error('Error fetching user from database:', error);
+      throw new Error('Database error');
+    }
   }
 
   async register(createUserDto: CreateUserDto): Promise<User> {
@@ -46,5 +65,9 @@ export class UsersService {
     }
   
     return user;
+  }
+
+  async logout(userId: number): Promise<void> {
+    
   }
 }
