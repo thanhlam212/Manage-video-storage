@@ -2,7 +2,7 @@ import apiClient from '../axiosConfig';
 
 export const login = async (username, password) => {
   try {
-    const response = await apiClient.post('/users/login', { username, password });
+    const response = await apiClient.post('users/login', { username, password });
     if (response.data && response.data.accessToken) {
       localStorage.setItem('accessToken', response.data.accessToken);
     }
@@ -15,7 +15,7 @@ export const login = async (username, password) => {
 
 export const register = async (userData) => {
   try {
-    const response = await apiClient.post('/users/register', userData);
+    const response = await apiClient.post('users/register', userData);
     return response.data;
   } catch (error) {
     console.error('Register error:', error);
@@ -33,7 +33,15 @@ export const getProfile = async () => {
   }
 };
 
-export const logout = () => {
-  localStorage.removeItem('accessToken');
+export const logout = async () => {
+  const token = localStorage.getItem('secretKey');
+
+  try{
+    const response = await apiClient.post('users/logout');
+    localStorage.removeItem('accessToken');
+    return response.data;
+  }catch(error){
+    throw new Error('logout failed');
+  }
 };
 

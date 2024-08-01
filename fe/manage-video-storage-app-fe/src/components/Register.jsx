@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './AuthForm.css';
+import './style/AuthForm.css';
 import { register } from '../services/AuthService';
 
 const Register = ({ toggleForm }) => {
@@ -14,8 +14,10 @@ const Register = ({ toggleForm }) => {
     try {
       const data = await register({ username, password, email, fullName, phoneNumber });
       console.log('Register success:', data);
+      toast.success('Register success!');
     } catch (error) {
       console.error('Register failed:', error);
+      toast.error('Register failed!');
     }
   };
 

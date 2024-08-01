@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import './AuthForm.css';
+import './style/AuthForm.css'
 import { login } from '../services/AuthService';
+import { toast } from 'react-toastify';
 
 const Login = ({ toggleForm }) => {
   const [username, setUsername] = useState('');
@@ -11,8 +12,10 @@ const Login = ({ toggleForm }) => {
     try {
       const data = await login(username, password);
       console.log('Login success:', data);
+      toast.success('Login success!');
     } catch (error) {
       console.error('Login failed:', error);
+      toast.error('Login failed!');
     }
   };
 
