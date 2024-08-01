@@ -3,6 +3,7 @@ import { CreateUserDto } from '../dto/create-user.dto/create-user.dto';
 import { User } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import { PrismaService } from 'prisma/service/prisma.service';
+import { promises } from 'dns';
 
 @Injectable()
 export class UserRepository {
@@ -28,4 +29,10 @@ export class UserRepository {
       },
     });
   }
+
+  // async invalidateToken(userId: number): Promise<void> {
+  //   await this.prisma.user.update({
+  //     where: { id: userId }
+  //   });
+  // }
 }
