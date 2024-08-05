@@ -14,27 +14,17 @@ export class UsersService {
     private readonly prisma: PrismaService
   ) {}
 
-  async findByUsername(username: string): Promise<User | undefined> {
-    return this.usersRepository.findByUsername(username);
-  }
-
   async getUserById(id: number) {
-    if (!id) {
-      throw new Error('User ID must be provided');
-    }
-    
-    try {
-      return await this.prisma.user.findUnique({
-        where: {
-          id: id,
-        },
-      });
-    } catch (error) {
-      console.error('Error fetching user from database:', error);
-      throw new Error('Database error');
-    }
+    return this.prisma.user.findUnique({
+      where: { id },
+    });
   }
 
+  async findByUsername(username: string) {
+    return this.prisma.user.findUnique({
+      where: { username },
+    });
+  }
   async register(createUserDto: CreateUserDto): Promise<User> {
     const { username } = createUserDto;
 
@@ -48,7 +38,7 @@ export class UsersService {
 
   async login(username: string, password: string): Promise<{ accessToken: string }> {
     const user = await this.validateUser(username, password);
-    const payload = { username: user.username };
+    const payload = {id: user.id, username: user.username };
     const accessToken = this.jwtService.sign(payload);
     return { accessToken };
   }
