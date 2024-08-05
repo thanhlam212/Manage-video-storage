@@ -23,7 +23,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       if (!user) {
         throw new UnauthorizedException('User not found');
       }
-      return user;
+      console.log('Validated user:', { id: user.id, username: user.username });
+      return { id: user.id, username: user.username }; 
     } catch (error) {
       throw new UnauthorizedException('Unauthorized', error.message);
     }
