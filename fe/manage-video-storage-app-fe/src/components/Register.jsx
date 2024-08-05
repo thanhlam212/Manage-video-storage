@@ -32,8 +32,8 @@ const Register = ({ toggleForm }) => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            placeholder='Username'
           />
-          <label>Username</label>
         </div>
         <div className="input-container">
           <input
@@ -41,8 +41,8 @@ const Register = ({ toggleForm }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            placeholder='Password'
           />
-          <label>Password</label>
         </div>
         <div className="input-container">
           <input
@@ -50,8 +50,8 @@ const Register = ({ toggleForm }) => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            placeholder='Email'
           />
-          <label>Email</label>
         </div>
         <div className="input-container">
           <input
@@ -59,8 +59,8 @@ const Register = ({ toggleForm }) => {
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             required
+            placeholder='Full Name'
           />
-          <label>Full Name</label>
         </div>
         <div className="input-container">
           <input
@@ -68,8 +68,8 @@ const Register = ({ toggleForm }) => {
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
             required
+            placeholder='Phone Number'
           />
-          <label>Phone Number</label>
         </div>
         <button type="submit" className="btn">Register</button>
       </form>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './style/AuthForm.css'
 import { login } from '../services/AuthService';
 import { toast } from 'react-toastify';
@@ -6,16 +7,16 @@ import { toast } from 'react-toastify';
 const Login = ({ toggleForm }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
       const data = await login(username, password);
-      console.log('Login success:', data);
-      toast.success('Login success!');
+      toast.success('Login successful');
+      navigate('/home'); // Redirect to home page after successful login
     } catch (error) {
-      console.error('Login failed:', error);
-      toast.error('Login failed!');
+      toast.error('Login failed');
     }
   };
 

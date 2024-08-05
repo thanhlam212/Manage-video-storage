@@ -34,14 +34,17 @@ export const getProfile = async () => {
 };
 
 export const logout = async () => {
-  const token = localStorage.getItem('secretKey');
+  const token = localStorage.getItem('accessToken');
 
-  try{
-    const response = await apiClient.post('users/logout');
+  try {
+    const response = await apiClient.post('users/logout', {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     localStorage.removeItem('accessToken');
     return response.data;
-  }catch(error){
-    throw new Error('logout failed');
+  } catch (error) {
+    throw new Error('Logout failed');
   }
 };
-
